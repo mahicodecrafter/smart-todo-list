@@ -1,247 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily To-Do List</title>
-<style>
-  * { box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #f4f5f7;
-    margin: 0;
-    padding: 40px 16px;
-    display: flex;
-    justify-content: center;
-    color: #222;
-  }
-  .card {
-    background: #fff;
-    width: 100%;
-    max-width: 480px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    padding: 24px;
-  }
-  h1 {
-    font-size: 20px;
-    margin: 0 0 4px;
-  }
-  .date {
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 20px;
-  }
-  .input-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  input[type="text"] {
-    flex: 1;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-  }
-  input[type="text"]:focus {
-    outline: none;
-    border-color: #6366f1;
-  }
-  button.add-btn {
-    background: #6366f1;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0 18px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  button.add-btn:hover { background: #4f46e5; }
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 4px;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  li:last-child { border-bottom: none; }
-  li input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-  li span.task-text {
-    flex: 1;
-    font-size: 14px;
-    word-break: break-word;
-  }
-  li.done span.task-text {
-    text-decoration: line-through;
-    color: #aaa;
-  }
-  li button.del-btn {
-    background: none;
-    border: none;
-    color: #bbb;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 2px 6px;
-  }
-  li button.del-btn:hover { color: #e11d48; }
-  .empty {
-    text-align: center;
-    color: #999;
-    font-size: 13px;
-    padding: 20px 0;
-  }
-  .footer {
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: #999;
-  }
-  .clear-btn {
-    background: none;
-    border: none;
-    color: #999;
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 12px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasks</title>
+  <meta name="description" content="A minimal, fast, and responsive daily task manager.">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="card">
-  <h1>Daily To-Do List</h1>
-  <div class="date" id="todayDate"></div>
+  <main class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-meta">
+        <h1 class="header-title">Tasks</h1>
+        <p class="header-date" id="currentDate"></p>
+      </div>
 
-  <div class="input-row">
-    <input type="text" id="taskInput" placeholder="Add a task..." autofocus>
-    <button class="add-btn" onclick="addTask()">Add</button>
-  </div>
+      <div class="header-actions">
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" class="btn-icon" aria-label="Toggle color theme" title="Toggle theme">
+          <svg class="icon-theme-dark" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+          </svg>
+          <svg class="icon-theme-light" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+    </header>
 
-  <ul id="taskList"></ul>
-  <div class="empty" id="emptyMsg" style="display:none;">No tasks yet. Add one above.</div>
+    <!-- Progress Bar (Minimal Hairline Indicator) -->
+    <div class="progress-bar-wrap" id="progressBarWrap" style="display: none;">
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+      </div>
+      <div class="progress-info">
+        <span id="progressSummary">0 of 0 completed</span>
+        <span id="progressPercent">0%</span>
+      </div>
+    </div>
 
-  <div class="footer">
-    <span id="countMsg"></span>
-    <button class="clear-btn" onclick="clearCompleted()">Clear completed</button>
-  </div>
-</div>
+    <!-- Task Creation Input -->
+    <form class="task-form" id="taskForm" onsubmit="return false;">
+      <div class="input-wrapper">
+        <input 
+          type="text" 
+          id="taskInput" 
+          class="task-input" 
+          placeholder="Add a new task..." 
+          autocomplete="off" 
+          autofocus
+        >
+        
+        <!-- Priority Selector (Subtle Flag Button) -->
+        <div class="input-controls">
+          <div class="priority-picker">
+            <button type="button" id="priorityPickerBtn" class="picker-btn" title="Set priority" aria-label="Set priority">
+              <svg viewBox="0 0 16 16" fill="currentColor">
+                <path d="M3 2v12h1.5V9.5H13l-2-3.5 2-3.5H4.5V2H3z"/>
+              </svg>
+              <span id="priorityLabel" class="priority-tag"></span>
+            </button>
+            <div id="priorityMenu" class="priority-dropdown" style="display: none;">
+              <button type="button" class="priority-option" data-prio="none">None</button>
+              <button type="button" class="priority-option" data-prio="low">Low</button>
+              <button type="button" class="priority-option" data-prio="medium">Medium</button>
+              <button type="button" class="priority-option" data-prio="high">High</button>
+            </div>
+          </div>
 
-<script>
-  const STORAGE_KEY = "dailyTodoTasks";
+          <button type="submit" id="addBtn" class="btn-submit" aria-label="Add task">
+            Add
+          </button>
+        </div>
+      </div>
+    </form>
 
-  function loadTasks() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch (e) {
-      console.error("Could not load tasks:", e);
-      return [];
-    }
-  }
+    <!-- Filter & Search Toolbar -->
+    <div class="toolbar">
+      <nav class="filter-group" aria-label="Filter tasks">
+        <button class="filter-tab active" data-filter="all">All <span class="tab-count" id="countAll">0</span></button>
+        <button class="filter-tab" data-filter="active">Active <span class="tab-count" id="countActive">0</span></button>
+        <button class="filter-tab" data-filter="completed">Completed <span class="tab-count" id="countCompleted">0</span></button>
+      </nav>
 
-  function saveTasks(tasks) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-    } catch (e) {
-      console.error("Could not save tasks:", e);
-    }
-  }
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+        </svg>
+        <input type="text" id="searchInput" class="search-field" placeholder="Search..." autocomplete="off">
+        <button type="button" id="clearSearchBtn" class="btn-clear-search" style="display: none;" aria-label="Clear search">✕</button>
+      </div>
+    </div>
 
-  let tasks = loadTasks();
+    <!-- Task List -->
+    <ul id="taskList" class="task-list"></ul>
 
-  function render() {
-    const list = document.getElementById("taskList");
-    const emptyMsg = document.getElementById("emptyMsg");
-    const countMsg = document.getElementById("countMsg");
-    list.innerHTML = "";
+    <!-- Empty State -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <p class="empty-text">No tasks found</p>
+    </div>
 
-    if (tasks.length === 0) {
-      emptyMsg.style.display = "block";
-    } else {
-      emptyMsg.style.display = "none";
-    }
+    <!-- Footer Controls -->
+    <footer class="app-footer">
+      <span class="footer-hint" id="activeItemsCount">0 items remaining</span>
+      <button type="button" id="clearCompletedBtn" class="btn-text" style="display: none;">
+        Clear completed
+      </button>
+    </footer>
+  </main>
 
-    tasks.forEach((task, index) => {
-      const li = document.createElement("li");
-      if (task.done) li.classList.add("done");
+  <!-- Undo Toast -->
+  <div id="toastContainer" class="toast-wrap" aria-live="polite"></div>
 
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = task.done;
-      checkbox.onchange = () => toggleTask(index);
-
-      const span = document.createElement("span");
-      span.className = "task-text";
-      span.textContent = task.text;
-
-      const delBtn = document.createElement("button");
-      delBtn.className = "del-btn";
-      delBtn.textContent = "✕";
-      delBtn.onclick = () => deleteTask(index);
-
-      li.appendChild(checkbox);
-      li.appendChild(span);
-      li.appendChild(delBtn);
-      list.appendChild(li);
-    });
-
-    const doneCount = tasks.filter(t => t.done).length;
-    countMsg.textContent = tasks.length
-      ? `${doneCount} of ${tasks.length} done`
-      : "";
-  }
-
-  function addTask() {
-    const input = document.getElementById("taskInput");
-    const text = input.value.trim();
-    if (!text) return;
-    tasks.push({ text, done: false });
-    saveTasks(tasks);
-    input.value = "";
-    render();
-  }
-
-  function toggleTask(index) {
-    tasks[index].done = !tasks[index].done;
-    saveTasks(tasks);
-    render();
-  }
-
-  function deleteTask(index) {
-    tasks.splice(index, 1);
-    saveTasks(tasks);
-    render();
-  }
-
-  function clearCompleted() {
-    tasks = tasks.filter(t => !t.done);
-    saveTasks(tasks);
-    render();
-  }
-
-  document.getElementById("taskInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") addTask();
-  });
-
-  document.getElementById("todayDate").textContent = new Date().toLocaleDateString(undefined, {
-    weekday: "long", year: "numeric", month: "long", day: "numeric"
-  });
-
-  render();
-</script>
-
+  <script src="app.js"></script>
 </body>
 </html>
