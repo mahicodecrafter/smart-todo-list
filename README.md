@@ -1,4 +1,4 @@
-# Tasks — Minimal & Responsive To-Do List
+# Tasks - Minimal & Responsive To-Do List
 
 A minimal, fast, and responsive daily task manager built with vanilla HTML5, CSS3, and JavaScript. Tasks are persisted using browser `localStorage` and smoothly animated.
 
@@ -33,6 +33,6 @@ smart-todo-list/
 └── LICENSE          # License
 ```
 
-## 👨‍💻 Created By
+## Created By
 MahiCodeCrafter  
 GitHub: [https://github.com/mahicodecrafter](https://github.com/mahicodecrafter)
